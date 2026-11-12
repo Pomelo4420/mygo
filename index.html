@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>黑鬼農家樂 - 點單系統</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f5f0dc;
+    font-family: SimSun, "宋体", serif;
+    font-size: 14px;
+    color: #000;
+}
+#container {
+    width: 900px;
+    margin: 10px auto;
+    background-color: #fffef8;
+    border: 2px solid #8b0000;
+}
+#header {
+    background-color: #8b0000;
+    color: #ffffcc;
+    text-align: center;
+    padding: 15px 10px;
+    border-bottom: 3px double #cc9900;
+}
+#header h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 4px;
+}
+#header p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: #ffeeaa;
+}
+#main {
+    padding: 10px;
+}
+.section-title {
+    background-color: #e8d8a8;
+    border: 1px solid #996600;
+    padding: 5px 8px;
+    font-weight: bold;
+    margin: 10px 0 5px 0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+th, td {
+    border: 1px solid #999;
+    padding: 6px;
+    text-align: center;
+}
+th {
+    background-color: #f0e0b0;
+}
+td.name {
+    text-align: left;
+}
+input.qty {
+    width: 50px;
+    text-align: center;
+}
+#order-area {
+    margin-top: 15px;
+}
+#cart-table td {
+    font-size: 13px;
+}
+#total-line {
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0;
+    color: #8b0000;
+}
+.btn {
+    background-color: #d9c27a;
+    border: 1px solid #666;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: SimSun, "宋体", serif;
+    font-size: 13px;
+}
+.btn:hover {
+    background-color: #e6d28f;
+}
+.btn-red {
+    background-color: #cc3333;
+    color: #fff;
+    border: 1px solid #660000;
+}
+.btn-red:hover {
+    background-color: #dd4444;
+}
+#customer-info {
+    margin: 8px 0;
+}
+#customer-info input, #customer-info textarea {
+    border: 1px solid #999;
+    font-family: SimSun, "宋体", serif;
+    font-size: 13px;
+    padding: 3px;
+}
+#customer-info table {
+    width: auto;
+    border: none;
+}
+#customer-info td {
+    border: none;
+    text-align: left;
+    padding: 3px 6px;
+}
+#result {
+    margin-top: 10px;
+    border: 1px dashed #996600;
+    background-color: #fffff0;
+    padding: 10px;
+    display: none;
+    white-space: pre-wrap;
+}
+#footer {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    padding: 8px;
+    border-top: 1px solid #ccc;
+    background-color: #faf6e8;
+}
+.notice {
+    color: #006600;
+    font-size: 12px;
+    margin: 4px 0;
+}
+.info-box {
+    border: 1px solid #ccc;
+    background-color: #fff;
+    padding: 8px 10px;
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+.plain-table {
+    margin-bottom: 10px;
+}
+.plain-table th {
+    background-color: #f0e0b0;
+}
+.plain-table td.label {
+    width: 90px;
+    background-color: #f7f1d8;
+    font-weight: bold;
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        <h1>黑鬼農家樂</h1>
+        <p>農家風味 ・ 現點現做 ・ 歡迎光臨</p>
+    </div>
+
+    <div id="main">
+        <div class="section-title">本店簡介</div>
+        <div class="info-box">
+            黑鬼農家樂坐落鄉間田園，主打地道農家菜與柴火風味。店內食材多取自自家菜園與附近農戶，講究原汁原味、份量實在。堂食、聚餐、家庭聚會皆宜，歡迎新老顧客前來品嚐。
+        </div>
+
+        <div class="section-title">招牌推薦</div>
+        <table class="plain-table">
+            <tr>
+                <th width="60">推薦</th>
+                <th>菜品</th>
+                <th width="120">特色介紹</th>
+                <th width="100">參考價格</th>
+            </tr>
+            <tr>
+                <td>★★★★★</td>
+                <td class="name">荔枝木燒雞</td>
+                <td class="name">果木慢燒，皮脆肉嫩，香氣十足</td>
+                <td>￥268</td>
+            </tr>
+            <tr>
+                <td>★★★★☆</td>
+                <td class="name">鐵鍋燉大鵝</td>
+                <td class="name">大鍋慢燉，湯濃味厚，適合多人分享</td>
+                <td>￥168</td>
+            </tr>
+            <tr>
+                <td>★★★★☆</td>
+                <td class="name">殺豬菜</td>
+                <td class="name">農家傳統做法，葷香濃郁，配餅更佳</td>
+                <td>￥58</td>
+            </tr>
+            <tr>
+                <td>★★★☆☆</td>
+                <td class="name">紅燒小龍蝦</td>
+                <td class="name">鮮香入味，下酒下飯</td>
+                <td>￥68</td>
+            </tr>
+        </table>
+
+        <div class="section-title">菜單列表</div>
+        <div class="section-title">飲料區</div>
+        <table id="menu-table">
+            <thead>
+                <tr>
+                    <th width="50">序號</th>
+                    <th>菜名</th>
+                    <th width="100">單價（元）</th>
+                    <th width="80">數量</th>
+                    <th width="100">操作</th>
+                </tr>
+            </thead>
+            <tbody id="menu-body"></tbody>
+        </table>
+
+        <div id="order-area">
+            <div class="section-title">已點菜品</div>
+            <table id="cart-table">
+                <thead>
+                    <tr>
+                        <th width="50">序號</th>
+                        <th>菜名</th>
+                        <th width="80">單價</th>
+                        <th width="80">數量</th>
+                        <th width="100">小計</th>
+                        <th width="80">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-body">
+                    <tr id="empty-row"><td colspan="6">尚未點菜</td></tr>
+                </tbody>
+            </table>
+            <div id="total-line">合計：￥<span id="total-price">0</span> 元</div>
+
+            <div class="section-title">顧客資訊</div>
+            <div id="customer-info">
+                <table>
+                    <tr>
+                        <td>桌號/姓名：</td>
+                        <td><input type="text" id="cust-name" size="20"></td>
+                        <td>聯繫電話：</td>
+                        <td><input type="text" id="cust-phone" size="20"></td>
+                    </tr>
+                    <tr>
+                        <td>支付方式：</td>
+                        <td>
+                            <input type="radio" name="pay" value="支付寶" checked> 支付寶
+                            <input type="radio" name="pay" value="微信支付"> 微信支付
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>我的位置：</td>
+                        <td colspan="3">
+                            <button class="btn" onclick="getLocation()">獲取位置</button>
+                            <span id="location-display" style="color:#006600;margin-left:8px;"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>備註：</td>
+                        <td colspan="3"><textarea id="cust-note" rows="2" cols="50"></textarea></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section-title">候位系統</div>
+            <div class="info-box" style="padding: 10px;">
+                <div>預計就餐人數：<input type="number" id="wait-person" min="1" value="1" style="width: 40px;"></div>
+                <div>預估等待時間：<span id="wait-time">15</span> 分鐘</div>
+                <button class="btn" onclick="takeNumber()">取號候位</button>
+                <div id="take-number-result" style="margin-top:5px;color:#006600;"></div>
+            </div>
+
+            <div style="margin-top:8px;">
+                <button class="btn btn-red" onclick="submitOrder()">提交訂單</button>
+                <button class="btn" onclick="clearCart()">清空訂單</button>
+            </div>
+
+            <div id="result"></div>
+        </div>
+
+        <div class="section-title">用餐須知</div>
+        <div class="info-box">
+            1. 本店菜品現點現做，部分菜品製作時間較長，請耐心等候。<br>
+            2. 請根據用餐人數適量點餐，避免浪費。<br>
+            3. 如有忌口、過敏或特殊口味需求（少辣/免蔥蒜等），請在備註中註明。<br>
+            4. 團體聚餐、預訂包間請提前電話聯繫（138-1145-2289）。<br>
+            5. 菜品價格與供應情況可能依季節調整，以店內實際為準。
+        </div>
+
+        <div class="section-title">店鋪資訊</div>
+        <table class="plain-table info-table">
+            <tr>
+                <td class="label">店名</td>
+                <td class="name">黑鬼農家樂</td>
+                <td class="label">營業時間</td>
+                <td class="name">每日 10:00 - 21:00</td>
+            </tr>
+            <tr>
+                <td class="label">聯繫電話</td>
+                <td class="name">138-1145-2289</td>
+                <td class="label">微信預訂</td>
+                <td class="name">heiguinongjiale</td>
+            </tr>
+            <tr>
+                <td class="label">店鋪地址</td>
+                <td class="name" colspan="3">廣東省廣州市荔灣區周門街114514號</td>
+            </tr>
+            <tr>
+                <td class="label">溫馨提示</td>
+                <td class="name" colspan="3">門口可停車，提供簡易洗手處，歡迎提前預約。</td>
+            </tr>
+        </table>
+        <div style="margin-top:6px;">
+            <b>支付方式：</b>支付寶 / 微信支付
+        </div>
+    </div>
+
+    <div class="section-title">訂單記錄（後台）</div>
+    <div id="admin-area">
+        <button class="btn" onclick="renderOrders()">刷新訂單</button>
+        <table id="admin-table">
+            <thead>
+                <tr>
+                    <th width="40">序號</th>
+                    <th width="170">下單時間</th>
+                    <th width="80">姓名/桌號</th>
+                    <th width="100">電話</th>
+                    <th width="90">支付方式</th>
+                    <th>菜品明細</th>
+                    <th width="90">合計</th>
+                </tr>
+            </thead>
+            <tbody id="admin-body">
+                <tr><td colspan="7">尚無訂單</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="footer">
+        黑鬼農家樂 &nbsp;|&nbsp; 農家風味 現點現做 &nbsp;|&nbsp; 訂餐電話：138-1145-2289 &nbsp;|&nbsp; 價格如有變動以店內為準
+    </div>
+</div>
+
+<script>
+var menuItems = [
+    {name: "荔枝木燒雞", price: 268},
+    {name: "鹽焗燒雞", price: 88},
+    {name: "無花果浸雞", price: 98},
+    {name: "鐵鍋燉大鵝", price: 168},
+    {name: "死面捲子", price: 12},
+    {name: "玉米麵餅子", price: 10},
+    {name: "農家小炒肉", price: 38},
+    {name: "煙燻臘肉", price: 48},
+    {name: "辣椒小炒肉", price: 36},
+    {name: "殺豬菜", price: 58},
+    {name: "涼拌鯽魚", price: 32},
+    {name: "爆炒螺蛳", price: 28},
+    {name: "紅燒小龍蝦", price: 68},
+    {name: "煎笨雞蛋", price: 22},
+    {name: "韭菜炒雞蛋", price: 18},
+    {name: "西紅柿炒蛋", price: 18},
+    {name: "農家老豆腐", price: 16},
+    {name: "地三鮮", price: 22},
+    {name: "尖椒乾豆腐", price: 20},
+    {name: "清炒時蔬", price: 16},
+    {name: "炒火大鍋飯", price: 25},
+    {name: "玉米窩窩頭", price: 10},
+    {name: "茅台 1998", price: 3680},
+    {name: "茅台 2005", price: 2880},
+    {name: "茅台 2010", price: 2380},
+    {name: "五糧液 15年", price: 188},
+    {name: "五糧液 30年", price: 388},
+    {name: "五糧液 50年", price: 688},
+    {name: "青島啤酒", price: 20}
+];
+
+var cart = {};
+var orders = [];
+var ORDERS_KEY = "hj_orders";
+var userLocation = "";  // 用戶當前位置 (經緯度)
+
+function saveOrders() {
+    try { localStorage.setItem(ORDERS_KEY, JSON.stringify(orders)); } catch(e) {}
+}
+function loadOrders() {
+    try { orders = JSON.parse(localStorage.getItem(ORDERS_KEY) || "[]"); } catch(e) { orders = []; }
+}
+function renderOrders() {
+    var tbody = document.getElementById("admin-body");
+    if (orders.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='7'>尚無訂單</td></tr>";
+        return;
+    }
+    var html = "";
+    for (var i = 0; i < orders.length; i++) {
+        var o = orders[i];
+        html += "<tr>";
+        html += "<td>" + (i + 1) + "</td>";
+        html += "<td>" + o.time + "</td>";
+        html += "<td>" + o.name + "</td>";
+        html += "<td>" + o.phone + "</td>";
+        html += "<td>" + o.pay + "</td>";
+        html += "<td class='name'>" + o.itemsText + "</td>";
+        html += "<td>￥" + o.total + "</td>";
+        html += "</tr>";
+    }
+    tbody.innerHTML = html;
+}
+
+function renderMenu() {
+    var tbody = document.getElementById("menu-body");
+    var html = "";
+    for (var i = 0; i < menuItems.length; i++) {
+        var item = menuItems[i];
+        var isDrink = /茅台|五糧液|啤酒/.test(item.name);
+        var drinkTag = isDrink ? "<span style='color:#cc3333;font-size:12px;background:#fff;margin-left:4px;padding:1px 3px;border:1px solid #cc3333;border-radius:2px;'>[飲料]</span>" : "";
+        html += "<tr>";
+        html += "<td>" + (i + 1) + "</td>";
+        html += "<td class='name'>" + item.name + drinkTag + "</td>";
+        html += "<td>￥" + item.price + "</td>";
+        html += "<td><input type='number' class='qty' id='qty-" + i + "' min='1' value='1'></td>";
+        html += "<td><button class='btn' onclick='addToCart(" + i + ")'>加入訂單</button></td>";
+        html += "</tr>";
+    }
+    tbody.innerHTML = html;
+}
+
+function addToCart(index) {
+    var qtyInput = document.getElementById("qty-" + index);
+    var qty = parseInt(qtyInput.value, 10);
+    if (isNaN(qty) || qty < 1) {
+        alert("請輸入正確的數量！");
+        return;
+    }
+    if (!cart[index]) {
+        cart[index] = 0;
+    }
+    cart[index] += qty;
+    qtyInput.value = 1;
+    renderCart();
+}
+
+function removeFromCart(index) {
+    delete cart[index];
+    renderCart();
+}
+
+function renderCart() {
+    var tbody = document.getElementById("cart-body");
+    var keys = [];
+    for (var k in cart) {
+        if (cart.hasOwnProperty(k)) keys.push(parseInt(k, 10));
+    }
+    keys.sort(function(a,b){return a-b;});
+
+    if (keys.length === 0) {
+        tbody.innerHTML = "<tr id='empty-row'><td colspan='6'>尚未點菜</td></tr>";
+        document.getElementById("total-price").innerHTML = "0";
+        return;
+    }
+
+    var html = "";
+    var total = 0;
+    for (var i = 0; i < keys.length; i++) {
+        var idx = keys[i];
+        var item = menuItems[idx];
+        var qty = cart[idx];
+        var sub = item.price * qty;
+        total += sub;
+        html += "<tr>";
+        html += "<td>" + (i + 1) + "</td>";
+        html += "<td class='name'>" + item.name + "</td>";
+        html += "<td>￥" + item.price + "</td>";
+        html += "<td>" + qty + "</td>";
+        html += "<td>￥" + sub + "</td>";
+        html += "<td><button class='btn' onclick='removeFromCart(" + idx + ")'>刪除</button></td>";
+        html += "</tr>";
+    }
+    tbody.innerHTML = html;
+    document.getElementById("total-price").innerHTML = total;
+}
+
+function clearCart() {
+    cart = {};
+    renderCart();
+    document.getElementById("result").style.display = "none";
+    document.getElementById("result").innerHTML = "";
+}
+
+function submitOrder() {
+    var keys = [];
+    for (var k in cart) {
+        if (cart.hasOwnProperty(k)) keys.push(parseInt(k, 10));
+    }
+    if (keys.length === 0) {
+        alert("您還沒有點菜，請先加入菜品！");
+        return;
+    }
+    keys.sort(function(a,b){return a-b;});
+
+    var name = document.getElementById("cust-name").value || "未填寫";
+    var phone = document.getElementById("cust-phone").value || "未填寫";
+    var pay = document.querySelector('input[name="pay"]:checked');
+    var payVal = pay ? pay.value : "支付寶";
+    var note = document.getElementById("cust-note").value || "無";
+    var now = new Date();
+    var timeStr = now.getFullYear() + "-" + pad(now.getMonth()+1) + "-" + pad(now.getDate()) + " " + pad(now.getHours()) + ":" + pad(now.getMinutes()) + ":" + pad(now.getSeconds());
+
+    var text = "========== 黑鬼農家樂 訂單 ==========\n";
+    text += "下單時間：" + timeStr + "\n";
+    text += "桌號/姓名：" + name + "\n";
+    text += "聯繫電話：" + phone + "\n";
+    text += "支付方式：" + payVal + "\n";
+    text += "使用者位置：" + (userLocation ? userLocation : "位置未授權") + "\n";
+    text += "------------------------------------\n";
+    var total = 0;
+    var itemsText = "";
+    for (var i = 0; i < keys.length; i++) {
+        var idx = keys[i];
+        var item = menuItems[idx];
+        var qty = cart[idx];
+        var sub = item.price * qty;
+        total += sub;
+        itemsText += item.name + " x" + qty + "，";
+        text += (i+1) + ". " + item.name + "  ￥" + item.price + " x " + qty + " = ￥" + sub + "\n";
+    }
+    itemsText = itemsText.replace(/，$/, "");
+    text += "------------------------------------\n";
+    text += "合計：￥" + total + " 元\n";
+    text += "備註：" + note + "\n";
+    text += "====================================\n";
+    text += "訂單已提交，請等待店家確認！";
+
+    var order = {
+        time: timeStr,
+        name: name,
+        phone: phone,
+        pay: payVal,
+        note: note,
+        itemsText: itemsText,
+        total: total
+    };
+    orders.push(order);
+    saveOrders();
+    renderOrders();
+
+    var result = document.getElementById("result");
+    result.style.display = "block";
+    result.innerHTML = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    alert("訂單提交成功！\n合計：￥" + total + " 元\n支付方式：" + payVal);
+}
+
+function pad(n) { return n < 10 ? "0" + n : "" + n; }
+
+function takeNumber() {
+    var persons = document.getElementById("wait-person").value;
+    var waitMinutes = Math.max(10, persons * 5);
+    document.getElementById("wait-time").innerHTML = waitMinutes;
+    var result = "您已成功取號，預估等待時間約 " + waitMinutes + " 分鐘。店家會在電話（138-1145-2289）聯繫您，請耐心等候。";
+    document.getElementById("take-number-result").innerHTML = result;
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            userLocation = "lat:" + lat + ",lon:" + lon;
+            document.getElementById("location-display").innerHTML = "緯度:" + lat.toFixed(4) + "，經度:" + lon.toFixed(4);
+        }, function(error) {
+            userLocation = "";
+            document.getElementById("location-display").innerHTML = "獲取位置失敗";
+            alert("無法獲取位置，請檢查瀏覽器權限或手動輸入備註。");
+        });
+    } else {
+        userLocation = "";
+        document.getElementById("location-display").innerHTML = "您的瀏覽器不支援定位";
+    }
+}
+
+loadOrders();
+renderOrders();
+renderMenu();
+</script>
+</body>
+</html>
